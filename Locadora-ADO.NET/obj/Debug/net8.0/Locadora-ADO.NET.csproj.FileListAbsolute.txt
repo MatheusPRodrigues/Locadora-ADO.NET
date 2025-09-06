@@ -1,0 +1,14 @@
+/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/bin/Debug/net8.0/Locadora-ADO.NET
+/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/bin/Debug/net8.0/Locadora-ADO.NET.deps.json
+/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/bin/Debug/net8.0/Locadora-ADO.NET.runtimeconfig.json
+/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/bin/Debug/net8.0/Locadora-ADO.NET.dll
+/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/bin/Debug/net8.0/Locadora-ADO.NET.pdb
+/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/obj/Debug/net8.0/Locadora-ADO.NET.GeneratedMSBuildEditorConfig.editorconfig
+/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/obj/Debug/net8.0/Locadora-ADO.NET.AssemblyInfoInputs.cache
+/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/obj/Debug/net8.0/Locadora-ADO.NET.AssemblyInfo.cs
+/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/obj/Debug/net8.0/Locadora-ADO.NET.csproj.CoreCompileInputs.cache
+/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/obj/Debug/net8.0/Locadora-ADO.NET.dll
+/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/obj/Debug/net8.0/refint/Locadora-ADO.NET.dll
+/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/obj/Debug/net8.0/Locadora-ADO.NET.pdb
+/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/obj/Debug/net8.0/Locadora-ADO.NET.genruntimeconfig.cache
+/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/obj/Debug/net8.0/ref/Locadora-ADO.NET.dll

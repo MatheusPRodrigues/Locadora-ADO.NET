@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Locadora-ADO.NET/1.0.0": {
+        "runtime": {
+          "Locadora-ADO.NET.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Locadora-ADO.NET/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

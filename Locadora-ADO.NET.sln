@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locadora-ADO.NET", "Locadora-ADO.NET\Locadora-ADO.NET.csproj", "{C8F2A934-58DB-4EEF-8E70-877E99C33FBE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C8F2A934-58DB-4EEF-8E70-877E99C33FBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8F2A934-58DB-4EEF-8E70-877E99C33FBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8F2A934-58DB-4EEF-8E70-877E99C33FBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8F2A934-58DB-4EEF-8E70-877E99C33FBE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
