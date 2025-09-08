@@ -12,3 +12,4 @@
 /home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/obj/Debug/net8.0/Locadora-ADO.NET.pdb
 /home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/obj/Debug/net8.0/Locadora-ADO.NET.genruntimeconfig.cache
 /home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/obj/Debug/net8.0/ref/Locadora-ADO.NET.dll
+/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/obj/Debug/net8.0/Locadora-ADO.NET.sourcelink.json

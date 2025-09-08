@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "5HiWD3vvPis=",
+  "dgSpecHash": "FGWGvG2gMqY=",
   "success": true,
   "projectFilePath": "/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/Locadora-ADO.NET.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/matheus/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.19/microsoft.aspnetcore.app.ref.8.0.19.nupkg.sha512"
+  ],
   "logs": []
 }
