@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Locadora-ADO.NET")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+596abdd7b3c3956647dc58def1d7b4d3ee0b241b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7932ec9f77bd9c373f3912df2e9269216f5d31a5")]
 [assembly: System.Reflection.AssemblyProductAttribute("Locadora-ADO.NET")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Locadora-ADO.NET")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
