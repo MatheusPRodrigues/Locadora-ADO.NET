@@ -27,6 +27,10 @@ public class GenerosMenuGeral
                     Console.Clear();
                     GenerosMenuExibicao.MenuDeExibicaoDeGeneros();
                     break;
+                case "3":
+                    GenerosService.AtualizarGenero();
+                    Console.Clear();
+                    break;
                 case "4":
                     Console.Clear();
                     GenerosMenuDeletar.MenuDeDeletarGeneros();

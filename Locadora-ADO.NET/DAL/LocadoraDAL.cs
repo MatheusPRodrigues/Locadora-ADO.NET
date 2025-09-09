@@ -37,10 +37,6 @@ public class LocadoraDAL
             else
                 throw new ErroNovoRegistroExcpetion($"Erro ao cadastrar gênero {generoParaCadastrar.Nome}");
         }
-        catch (ErroNovoRegistroExcpetion e)
-        {
-            throw e;
-        }
         catch (SQLiteException e)
         { 
             throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
@@ -72,10 +68,6 @@ public class LocadoraDAL
                 throw new RegistroNaoEcontradoException("Não há registro de Gêneros no banco");
             }
         }
-        catch (RegistroNaoEcontradoException e)
-        {
-            throw e;
-        } 
         catch (SQLiteException)
         {
             throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
@@ -102,10 +94,6 @@ public class LocadoraDAL
                 }
             }
         }
-        catch (RegistroNaoEcontradoException e)
-        {
-            throw e;
-        } 
         catch (SQLiteException)
         {
             throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
@@ -132,16 +120,36 @@ public class LocadoraDAL
                 }
             }
         }
-        catch (RegistroNaoEcontradoException e)
-        {
-            throw e;
-        } 
         catch (SQLiteException)
         {
             throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
         }
     }
 
+    public static void AtualizarUmGenero(Genero generoParaAtualizar)
+    {
+        try
+        {
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = """
+                                      UPDATE Generos
+                                      SET nome=@nome, descricao=@descricao
+                                      WHERE id=@id
+                                      """;
+                comando.Parameters.AddWithValue("@nome", generoParaAtualizar.Nome);
+                comando.Parameters.AddWithValue("@descricao", generoParaAtualizar.Descricao);
+                comando.Parameters.AddWithValue("@id", generoParaAtualizar.Id);
+                comando.ExecuteNonQuery();
+                Console.WriteLine("Gênero foi atualizado com sucesso!");
+            }
+        }
+        catch (SQLiteException e)
+        {
+            throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
+        }
+    }
+    
     public static void DeletarUmGeneroPorId(int id)
     {
         try
@@ -159,10 +167,6 @@ public class LocadoraDAL
             else
                 throw new RegistroNaoEcontradoException(
                     $"Gênero de id: {id} não foi encontrado na base de dados para ser excluído!");
-        }
-        catch (RegistroNaoEcontradoException e)
-        {
-            throw e;
         }
         catch (SQLiteException e)
         {
@@ -187,10 +191,6 @@ public class LocadoraDAL
             else
                 throw new RegistroNaoEcontradoException(
                     $"Gênero de nome: {nome} não foi encontrado na base de dados para ser excluído!");
-        }
-        catch (RegistroNaoEcontradoException e)
-        {
-            throw e;
         }
         catch (SQLiteException e)
         {

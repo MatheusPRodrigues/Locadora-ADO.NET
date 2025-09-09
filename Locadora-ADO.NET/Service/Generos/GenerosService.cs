@@ -69,6 +69,63 @@ public class GenerosService
         if (generos.Count < 1)
             throw new RegistroNaoEcontradoException("Não há gêneros cadastrados na base de dados!");
     }
+
+    private static void AlterandoDadosDeGenero(Genero genero)
+    {
+        do
+        {
+            try
+            {
+                Console.Clear();
+                Console.WriteLine("======== ALTERE OS DADOS DO GÊNERO ========");
+                ExibirInformacoes(genero);
+                Console.WriteLine("\nSelecione uma das seguintes opções: ");
+                Console.WriteLine("1 - Alterar nome");
+                Console.WriteLine("2 - Alterar descricao");
+                Console.WriteLine("3 - Salvar alterações");
+                Console.WriteLine("4 - Cancelar alterações e retornar");
+                Console.Write(": ");
+                string? opcaoDoUsuario = Console.ReadLine();
+
+                switch (opcaoDoUsuario)
+                {
+                    case "1":
+                        string novoNome = VerificarStringValida(
+                            "Insira um novo nome para o gênero: ",
+                            "Nome inválido! Ex válido: Terror");
+                        VerificarSeNomeDeGeneroJaExiste(novoNome);
+                        genero.Nome = novoNome;
+                        break;
+                    case "2":
+                        string novaDescricao = VerificarStringValida(
+                            "Insira uma nova descrição para o gênero: ",
+                            "Digite uma descrição!!");
+                        genero.Descricao = novaDescricao;
+                        break;
+                    case "3":
+                        LocadoraDAL.AtualizarUmGenero(genero);
+                        Console.Write("\nPressioner ENTER para continuar...");
+                        Console.ReadLine();
+                        ListarTodosOsGeneros();
+                        return;
+                    case "4":
+                        Console.WriteLine("Operação de atualização encerrada com sucesso!");
+                        Console.Write("\nPressioner ENTER para continuar...");
+                        Console.ReadLine();
+                        return;
+                    default:
+                        Console.WriteLine("Opção inválida! Tente novamente com uma das opções do menu!");
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.Write("\nPressioner ENTER para continuar...");
+                Console.ReadLine();
+            }
+        } while (true);
+    }
     
     
     public static void CadastrarGeneroNoSistema()
@@ -156,6 +213,28 @@ public class GenerosService
         }
     }
 
+    public static void AtualizarGenero()
+    {
+        try
+        {
+            VerificarSeExisteGenerosCadastrados();
+            ListarTodosOsGeneros();
+            
+            int id = VerificaSeEhNumeroInteiro(
+                "Insira o id do gênero que deseja consultar: ",
+                "Digite somente números inteiros positivos!"
+            );
+
+            AlterandoDadosDeGenero(LocadoraDAL.ExibirUmGeneroPorId(id));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            Console.Write("\nPressioner ENTER para continuar...");
+            Console.ReadLine();
+        }
+    }
+    
     public static void DeletarUmGeneroPeloId()
     {
         try
