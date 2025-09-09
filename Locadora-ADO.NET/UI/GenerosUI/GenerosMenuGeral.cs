@@ -1,3 +1,5 @@
+using Locadora_ADO.NET.Service.Generos;
+
 namespace Locadora_ADO.NET.UI.GenerosUI;
 
 public class GenerosMenuGeral
@@ -10,16 +12,24 @@ public class GenerosMenuGeral
             Console.WriteLine("1 - Cadastrar novo gênero");
             Console.WriteLine("2 - Exibir gêneros");
             Console.WriteLine("3 - Atualizar dados de gênero");
-            Console.WriteLine("4 - Exibir gêneros");
+            Console.WriteLine("4 - Deletar gêneros");
             Console.WriteLine("0 - Retornar ao menu anterior");
             Console.Write(": ");
             string? opcaoDoUsuario = Console.ReadLine();
 
             switch (opcaoDoUsuario)
             {
+                case "1":
+                    GenerosService.CadastrarGeneroNoSistema();
+                    Console.Clear();
+                    break;
                 case "2":
                     Console.Clear();
                     GenerosMenuExibicao.MenuDeExibicaoDeGeneros();
+                    break;
+                case "4":
+                    Console.Clear();
+                    GenerosMenuDeletar.MenuDeDeletarGeneros();
                     break;
                 case "0":
                     Console.Clear();

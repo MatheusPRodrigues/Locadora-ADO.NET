@@ -19,6 +19,34 @@ public class LocadoraDAL
 
     #region Operações relacionadas a tabela gêneros
 
+    public static void CadastrarGeneroNoSistema(Genero generoParaCadastrar)
+    {
+        int linhasAfetadas;
+        try
+        {
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = "INSERT INTO Generos (nome, descricao) VALUES (@nome, @descricao)";
+                comando.Parameters.AddWithValue("@nome", generoParaCadastrar.Nome);
+                comando.Parameters.AddWithValue("@descricao", generoParaCadastrar.Descricao);
+                linhasAfetadas = comando.ExecuteNonQuery();
+            }
+
+            if (linhasAfetadas > 0)
+                Console.WriteLine($"Gênero {generoParaCadastrar.Nome} cadastrado com sucesso!");
+            else
+                throw new ErroNovoRegistroExcpetion($"Erro ao cadastrar gênero {generoParaCadastrar.Nome}");
+        }
+        catch (ErroNovoRegistroExcpetion e)
+        {
+            throw e;
+        }
+        catch (SQLiteException e)
+        { 
+            throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
+        }
+    }
+    
     public static List<Genero> ListarTodosOsGeneros()
     {
         try
@@ -50,7 +78,7 @@ public class LocadoraDAL
         } 
         catch (SQLiteException)
         {
-            throw new SQLiteException("Erro ao manipular banco de dados!");
+            throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
         }
     }
 
@@ -70,7 +98,6 @@ public class LocadoraDAL
                             leitor["nome"].ToString(),
                             leitor["descricao"].ToString()
                             );
-                    
                     throw new RegistroNaoEcontradoException($"Não há nenhum registro de gênero com esse id: {id}");
                 }
             }
@@ -81,7 +108,7 @@ public class LocadoraDAL
         } 
         catch (SQLiteException)
         {
-            throw new SQLiteException("Erro ao manipular banco de dados!");
+            throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
         }
     }
     
@@ -111,7 +138,64 @@ public class LocadoraDAL
         } 
         catch (SQLiteException)
         {
-            throw new SQLiteException("Erro ao manipular banco de dados!");
+            throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
+        }
+    }
+
+    public static void DeletarUmGeneroPorId(int id)
+    {
+        try
+        {
+            int linhasAfetadas;
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = "DELETE FROM Generos WHERE id = @id";
+                comando.Parameters.AddWithValue("@id", id);
+                linhasAfetadas = comando.ExecuteNonQuery();
+            }
+
+            if (linhasAfetadas > 0)
+                Console.WriteLine($"Gênero de id: {id} deletado com sucesso da base de dados!");
+            else
+                throw new RegistroNaoEcontradoException(
+                    $"Gênero de id: {id} não foi encontrado na base de dados para ser excluído!");
+        }
+        catch (RegistroNaoEcontradoException e)
+        {
+            throw e;
+        }
+        catch (SQLiteException e)
+        {
+            //Console.WriteLine(e.Message);
+            throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
+        }
+    }
+
+    public static void DeletarUmGeneroPeloNome(string nome)
+    {
+        try
+        {
+            int linhasAfetadas;
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = "DELETE FROM Generos WHERE nome = @nome";
+                comando.Parameters.AddWithValue("@nome", nome);
+                linhasAfetadas = comando.ExecuteNonQuery();
+            }
+            if (linhasAfetadas > 0)
+                Console.WriteLine($"Gênero de nome: {nome} deletado com sucesso da base de dados!");
+            else
+                throw new RegistroNaoEcontradoException(
+                    $"Gênero de nome: {nome} não foi encontrado na base de dados para ser excluído!");
+        }
+        catch (RegistroNaoEcontradoException e)
+        {
+            throw e;
+        }
+        catch (SQLiteException e)
+        {
+            //Console.WriteLine(e.Message);
+            throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
         }
     }
     

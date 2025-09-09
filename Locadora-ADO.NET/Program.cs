@@ -9,7 +9,7 @@ class Program
         do
         {
             Console.WriteLine("============ L O C A D O R A  D E  F I L M E S ============");
-            Console.WriteLine("============ S E J A  B E M - V I N D O (A) ! ============\n");
+            Console.WriteLine("============ S E J A  B E M - V I N D O (A) ! ============");
             Console.WriteLine("1 - Menu de gêneros de filme");
             Console.WriteLine("0 - Encerrar sistema");
             Console.Write(": ");
