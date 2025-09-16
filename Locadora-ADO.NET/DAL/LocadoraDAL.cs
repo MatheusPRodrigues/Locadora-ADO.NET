@@ -200,4 +200,141 @@ public class LocadoraDAL
     }
     
     #endregion
+
+    // ---------------------------------------------------------------------------------------------------------------\\
+    
+    #region Operações relacionadas a tabela de clientes
+
+    public static void CadastrarCliente(Cliente clienteParaCadastar)
+    {
+        int linhasAfetadas;
+        try
+        {
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = "INSERT INTO Clientes(nome, cpf, telefone, endereco) " +
+                                      "VALUES(@nome, @cpf, @telefone, @endereco)";
+                comando.Parameters.AddWithValue("@nome", clienteParaCadastar.Nome);
+                comando.Parameters.AddWithValue("@cpf", clienteParaCadastar.Cpf);
+                comando.Parameters.AddWithValue("@telefone", clienteParaCadastar.Telefone);
+                comando.Parameters.AddWithValue("@endereco", clienteParaCadastar.Endereco);
+                if (comando.ExecuteNonQuery() > 0)
+                {
+                    Console.WriteLine("Novo cliente inserido com sucesso!");
+                }
+                else
+                {
+                    throw new ErroNovoRegistroExcpetion(
+                        "Falha ao cadastrar cliente! Verifique todos os campos e tente novamente!");
+                }
+            }
+        }
+        catch (Exception e)
+        {
+                Console.WriteLine(e);
+                throw;
+        }
+    }
+    
+    public static List<Cliente> ExibirTodosClientes()
+    {
+        List<Cliente> clientes = new List<Cliente>();
+        try
+        {
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = "SELECT * FROM Clientes";
+                using var leitor = comando.ExecuteReader();
+                if (leitor.HasRows)
+                {
+                    while (leitor.Read())
+                    {
+                        clientes.Add(
+                            new Cliente(
+                                Convert.ToInt32(leitor["id"]),
+                                leitor["nome"].ToString(),
+                                leitor["cpf"].ToString(),
+                                leitor["telefone"].ToString(),
+                                leitor["endereco"].ToString(),
+                                Convert.ToBoolean(leitor["ativo"])
+                            )
+                        );
+                    }
+                    return clientes;
+                }
+                throw new RegistroNaoEcontradoException("Não foi encontrado nenhum cliente na base de dados!");
+            }
+        }
+        catch (SQLiteException)
+        {
+            throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
+        }
+    }
+
+    public static List<Cliente> ExibirClientePorNome(string nome)
+    {
+        List<Cliente> clientes = new List<Cliente>();
+        try
+        {
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = "SELECT * FROM Clientes WHERE nome LIKE @nome";
+                comando.Parameters.AddWithValue("@nome", $"{nome}%");
+                using var leitor = comando.ExecuteReader();
+                if (leitor.HasRows)
+                {
+                    while (leitor.Read())
+                    {
+                        clientes.Add(new Cliente(
+                            Convert.ToInt32(leitor["id"]),
+                            leitor["nome"].ToString(),
+                            leitor["cpf"].ToString(),
+                            leitor["telefone"].ToString(),
+                            leitor["endereco"].ToString(),
+                            Convert.ToBoolean(leitor["ativo"])
+                        ));
+                    }
+                    return clientes;
+                }
+                throw new RegistroNaoEcontradoException($"Não foi encontrado nenhum cliente com o nome '{nome}' na base de dados!");
+            }
+        }
+        catch (SQLiteException)
+        {
+            throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
+        }
+    }
+    
+    public static Cliente ExibirClientePeloCpf(string cpf)
+    {
+        try
+        {
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = "SELECT * FROM Clientes WHERE cpf = @cpf";
+                comando.Parameters.AddWithValue("@cpf", cpf);
+                using var leitor = comando.ExecuteReader();
+                if (leitor.Read())
+                {
+                    return new Cliente(
+                        Convert.ToInt32(leitor["id"]),
+                        leitor["nome"].ToString(),
+                        leitor["cpf"].ToString(),
+                        leitor["telefone"].ToString(),
+                        leitor["endereco"].ToString(),
+                        Convert.ToBoolean(leitor["ativo"])
+                    );
+                }
+                throw new RegistroNaoEcontradoException($"Não foi encontrado nenhum cliente com o cpf '{cpf}' na base de dados!");
+            }
+        }
+        catch (SQLiteException)
+        {
+            throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
+        }
+    }
+    
+    #endregion
+    
+    
 }

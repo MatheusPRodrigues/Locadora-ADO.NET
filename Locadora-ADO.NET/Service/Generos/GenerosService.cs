@@ -1,40 +1,14 @@
-using System.Data.SQLite;
 using Locadora_ADO.NET.DAL;
 using Locadora_ADO.NET.Exceptions;
 using Locadora_ADO.NET.ML;
+
+// importação estática
+using static Locadora_ADO.NET.Util.Utils;
 
 namespace Locadora_ADO.NET.Service.Generos;
 
 public class GenerosService
 {
-    private static int VerificaSeEhNumeroInteiro(string mensagemDeInsercao, string mensagemDeErro)
-    {
-        int numero;
-        do
-        {
-            Console.Write($"{mensagemDeInsercao}");
-            bool ehNumero = Int32.TryParse(Console.ReadLine(), out numero);
-            if (ehNumero && numero > 0)
-                break;
-            Console.WriteLine($"\n{mensagemDeErro}");
-        } while (true);
-        return numero;
-    }
-
-    private static string VerificarStringValida(string mensagemDeInsercao, string mensagemDeErro)
-    {
-        string? nome;
-        do
-        {
-            Console.Write($"{mensagemDeInsercao}");
-            nome = Console.ReadLine();
-            if (!String.IsNullOrWhiteSpace(nome))
-                break;
-            Console.WriteLine($"\n{mensagemDeErro}");
-        } while (true);
-        return nome;
-    }
-    
     private static void ExibirInformacoes(Genero genero)
     {
         Console.WriteLine($"\nId: {genero.Id}");
@@ -245,12 +219,31 @@ public class GenerosService
             int id = VerificaSeEhNumeroInteiro(
                 "Digite o id do gênero que deseja deletar: ",
                 "Digite um número inteiro positivo para o id!");
-            
-            LocadoraDAL.DeletarUmGeneroPorId(id);
-            Console.Write("\nPressioner ENTER para continuar...");
-            Console.ReadLine();
-            
-            ListarTodosOsGeneros();
+
+            string opcao = "";
+            while (opcao != "1" && opcao != "0")
+            {
+                Console.WriteLine($"Deseja excluir gênero de id: {id}\n1-Confirmar/0-Retornar:");
+                opcao = Console.ReadLine();
+
+                if (opcao == "1")
+                {
+                    LocadoraDAL.DeletarUmGeneroPorId(id);
+                    Console.Write("\nPressioner ENTER para continuar...");
+                    Console.ReadLine();
+                    
+                    ListarTodosOsGeneros();
+                }
+                else if(opcao == "0")
+                {
+                    Console.WriteLine("Operação cancelada com sucesso!");
+                    Console.Write("\nPressioner ENTER para continuar...");
+                    Console.ReadLine();
+                    return;
+                }
+                else
+                    Console.WriteLine("Opção inválida! Tente novamente!");
+            }
         }
         catch (Exception e)
         {
@@ -270,13 +263,31 @@ public class GenerosService
             string nome = VerificarStringValida(
                 "Digite o nome do gênero que deseja excluir:",
                 "Digite um nome válido! Ex: Terror");
-            
-            LocadoraDAL.DeletarUmGeneroPeloNome(nome);
-            
-            Console.Write("\nPressioner ENTER para continuar...");
-            Console.ReadLine();
-            
-            ListarTodosOsGeneros();
+
+            string opcao = "";
+            while (opcao != "1" && opcao != "0")
+            {
+                Console.WriteLine($"Deseja excluir gênero : {nome}\n1-Confirmar/0-Retornar:");
+                opcao = Console.ReadLine();
+
+                if (opcao == "1")
+                {
+                    LocadoraDAL.DeletarUmGeneroPeloNome(nome);
+                    Console.Write("\nPressioner ENTER para continuar...");
+                    Console.ReadLine();
+
+                    ListarTodosOsGeneros();
+                }
+                else if (opcao == "0")
+                {
+                    Console.WriteLine("Operação cancelada com sucesso!");
+                    Console.Write("\nPressioner ENTER para continuar...");
+                    Console.ReadLine();
+                    return;
+                }
+                else
+                    Console.WriteLine("Opção inválida! Tente novamente!");
+            }
         }
         catch (Exception e)
         {
