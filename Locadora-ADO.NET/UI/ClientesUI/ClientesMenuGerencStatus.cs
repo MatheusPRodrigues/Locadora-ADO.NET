@@ -2,20 +2,17 @@ using Locadora_ADO.NET.Service.Clientes;
 
 namespace Locadora_ADO.NET.UI.ClientesUI;
 
-using static ClientesMenuExibicao;
-using static ClientesMenuGerencStatus;
-
-public class ClientesMenuGeral
+public class ClientesMenuGerencStatus
 {
-    public static void MenuDeInteracaoDeClientes()
+    public static void MenuDeGerencDeStatusDoCliente()
     {
         do
         {
-            Console.WriteLine("========== MENU GERAL DA ABA - CLIENTES ==========");
-            Console.WriteLine("1 - Cadastrar novo cliente");
-            Console.WriteLine("2 - Exibir clientes");
-            Console.WriteLine("3 - Atualizar dados de cliente");
-            Console.WriteLine("4 - Gerenciar status do cliente no sistema");
+            Console.WriteLine("========== MENU GERAL DE GERENCIAMENTO DE STATUS DOS CLIENTES DA LOCADORA ==========");
+            Console.WriteLine("1 - Desativar cliente pelo id");
+            Console.WriteLine("2 - Listar todos clientes desativos");
+            Console.WriteLine("3 - Ativar cliente pelo id");
+            Console.WriteLine("4 - Deletar dados do cliente da base de dados");
             Console.WriteLine("0 - Retornar ao menu anterior");
             Console.Write(": ");
             string? opcaoDoUsuario = Console.ReadLine();
@@ -23,17 +20,15 @@ public class ClientesMenuGeral
             switch (opcaoDoUsuario)
             {
                 case "1":
-                    ClientesService.CadastrarCliente();
+                    ClientesService.DesativarClientePeloId();
                     break;
                 case "2":
-                    MenuDeExibicaoDeClientes();
                     Console.Clear();
                     break;
                 case "3":
                     Console.Clear();
                     break;
                 case "4":
-                    MenuDeGerencDeStatusDoCliente();
                     Console.Clear();
                     break;
                 case "0":

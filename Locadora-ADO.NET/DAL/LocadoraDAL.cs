@@ -304,6 +304,35 @@ public class LocadoraDAL
         }
     }
     
+    public static Cliente ExibirClientePeloId(int id)
+    {
+        try
+        {
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = "SELECT * FROM Clientes WHERE id = @id";
+                comando.Parameters.AddWithValue("@id", id);
+                using var leitor = comando.ExecuteReader();
+                if (leitor.Read())
+                {
+                    return new Cliente(
+                        Convert.ToInt32(leitor["id"]),
+                        leitor["nome"].ToString(),
+                        leitor["cpf"].ToString(),
+                        leitor["telefone"].ToString(),
+                        leitor["endereco"].ToString(),
+                        Convert.ToBoolean(leitor["ativo"])
+                    );
+                }
+                throw new RegistroNaoEcontradoException($"Não foi encontrado nenhum cliente com o id: {id} na base de dados!");
+            }
+        }
+        catch (SQLiteException)
+        {
+            throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
+        }
+    }
+    
     public static Cliente ExibirClientePeloCpf(string cpf)
     {
         try
@@ -325,6 +354,24 @@ public class LocadoraDAL
                     );
                 }
                 throw new RegistroNaoEcontradoException($"Não foi encontrado nenhum cliente com o cpf '{cpf}' na base de dados!");
+            }
+        }
+        catch (SQLiteException)
+        {
+            throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
+        }
+    }
+
+    public static void DesativarClientePeloId(int id)
+    {
+        try
+        {
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = "UPDATE Clientes SET ativo = false WHERE id = @id";
+                comando.Parameters.AddWithValue("@id", id);
+                comando.ExecuteNonQuery();
+                Console.WriteLine($"Cliente de id: {id} desativado com sucesso!");
             }
         }
         catch (SQLiteException)

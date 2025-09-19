@@ -93,6 +93,22 @@ public class ClientesService
         }
     }
 
+    private static void ValidarSeClientePodeSerDesativado(int id)
+    {
+        try
+        {
+            Cliente cliente = LocadoraDAL.ExibirClientePeloId(id);
+            if (!cliente.Ativo)
+            {
+                throw new ArgumentException("Este cliente já está desativo!");
+            }
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+    }
+    
     public static void CadastrarCliente()
     {
         try
@@ -181,6 +197,24 @@ public class ClientesService
         {
             Console.Write("\nPressioner ENTER para continuar...");
             Console.ReadLine();
+        }
+    }
+
+    public static void DesativarClientePeloId()
+    {
+        try
+        {
+            ExibirTodosClientes();
+            int id = VerificaSeEhNumeroInteiro("Insira o id do cliente que deseja desativar: ",
+                "Entrada inválida! Tente novamente!");
+            ValidarSeClientePodeSerDesativado(id);
+            LocadoraDAL.DesativarClientePeloId(id);
+            PressioneEnterParaContinuar();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            PressioneEnterParaContinuar();
         }
     }
     
