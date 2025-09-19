@@ -207,7 +207,6 @@ public class LocadoraDAL
 
     public static void CadastrarCliente(Cliente clienteParaCadastar)
     {
-        int linhasAfetadas;
         try
         {
             using (var comando = DbConnection().CreateCommand())

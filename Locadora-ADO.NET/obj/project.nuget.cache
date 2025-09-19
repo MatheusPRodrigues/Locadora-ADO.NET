@@ -1,12 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "8IeMgxltWOI=",
+  "dgSpecHash": "fhWYXWKZPCo=",
   "success": true,
   "projectFilePath": "/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/Locadora-ADO.NET.csproj",
   "expectedPackageFiles": [
     "/home/matheus/.nuget/packages/stub.system.data.sqlite.core.netstandard/1.0.119/stub.system.data.sqlite.core.netstandard.1.0.119.nupkg.sha512",
-    "/home/matheus/.nuget/packages/system.data.sqlite.core/1.0.119/system.data.sqlite.core.1.0.119.nupkg.sha512",
-    "/home/matheus/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.19/microsoft.aspnetcore.app.ref.8.0.19.nupkg.sha512"
+    "/home/matheus/.nuget/packages/system.data.sqlite.core/1.0.119/system.data.sqlite.core.1.0.119.nupkg.sha512"
   ],
   "logs": []
 }

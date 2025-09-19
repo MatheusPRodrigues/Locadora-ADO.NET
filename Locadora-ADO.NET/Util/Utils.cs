@@ -30,4 +30,11 @@ public class Utils
         return nome;
     }
 
+    public static void PressioneEnterParaContinuar()
+    {
+        Console.WriteLine("Pressione ENTER para continuar...");
+        Console.ReadLine();
+        Console.Clear();
+    }
+
 }

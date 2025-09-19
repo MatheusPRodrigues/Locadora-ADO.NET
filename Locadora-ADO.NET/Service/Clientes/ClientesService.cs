@@ -14,15 +14,16 @@ public class ClientesService
         {
             Console.Write(mensagemDeInteracao);
             telefone = Console.ReadLine();
+            bool ehValida = long.TryParse(telefone, out long number);
+            
             if (String.IsNullOrWhiteSpace(telefone) ||
-                !(long.TryParse(telefone, out long number) ||
-                  telefone.Length < 10 ||
-                  telefone.Length > 11))
-            {
+                !ehValida ||
+                telefone.Length < 10 ||
+                telefone.Length > 11)
                 Console.WriteLine(mensagemDeErro);
-            }
             else
                 return telefone;
+            
         } while (true);
     }
     
@@ -53,6 +54,18 @@ public class ClientesService
         }
     }
 
+    private static void ValidarCPFJaExistente(string cpf)
+    {
+        List<Cliente> clientes = LocadoraDAL.ExibirTodosClientes();
+        foreach (var c in clientes)
+        {
+            if (c.Cpf == cpf)
+            {
+                throw new ArgumentException("Esse CPF já está cadastrado!");
+            }
+        }
+    }
+    
     private static void ExibirInformacoes(Cliente cliente)
     {
         if (cliente.Ativo)
@@ -89,7 +102,8 @@ public class ClientesService
             
             string cpf = InserirUmCpfValido("Insira o CPF do cliente. Ex (99999999999): ",
                 "CPF inválido! Tente novamente!");
-
+            ValidarCPFJaExistente(cpf);
+            
             string telefone = InserirUmTelefoneValido("Insira um número de telefone, ex (1199224455 ou 11999224455): ",
                 "Entrada inválida! Tente novamente!");
             
@@ -109,6 +123,7 @@ public class ClientesService
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+            PressioneEnterParaContinuar();
         }
     }
     
