@@ -17,6 +17,8 @@ public class LocadoraDAL
         return _sqLiteConnection;
     }
 
+    private static string mensagemDeErroSQLite = "Erro manipular banco de dados! Entre em contato com o suporte!";
+    
     #region Operações relacionadas a tabela gêneros
 
     public static void CadastrarGeneroNoSistema(Genero generoParaCadastrar)
@@ -269,7 +271,7 @@ public class LocadoraDAL
             throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
         }
     }
-
+    
     public static List<Cliente> ExibirClientePorNome(string nome)
     {
         List<Cliente> clientes = new List<Cliente>();
@@ -358,25 +360,39 @@ public class LocadoraDAL
         }
         catch (SQLiteException)
         {
-            throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
+            throw new SQLiteException(mensagemDeErroSQLite);
         }
     }
 
-    public static void DesativarClientePeloId(int id)
+    public static void AlterarDadosDoCliente(Cliente cliente)
     {
         try
         {
             using (var comando = DbConnection().CreateCommand())
             {
-                comando.CommandText = "UPDATE Clientes SET ativo = false WHERE id = @id";
-                comando.Parameters.AddWithValue("@id", id);
-                comando.ExecuteNonQuery();
-                Console.WriteLine($"Cliente de id: {id} desativado com sucesso!");
+                comando.CommandText = """
+                                      UPDATE Clientes SET
+                                            nome = @nome,
+                                            telefone = @telefone,
+                                            endereco = @endereco,
+                                            ativo = @ativo
+                                      WHERE id = @id
+                                      """;
+                comando.Parameters.AddWithValue("@nome", cliente.Nome);
+                comando.Parameters.AddWithValue("@telefone", cliente.Telefone);
+                comando.Parameters.AddWithValue("@endereco", cliente.Endereco);
+                comando.Parameters.AddWithValue("@ativo", cliente.Ativo);
+                comando.Parameters.AddWithValue("@id", cliente.Id);
+                if (comando.ExecuteNonQuery() > 0)
+                    Console.WriteLine("Cliente atualizado com sucesso!");
+                else
+                    throw new ArgumentException(
+                        "Falha ao alterar dados, tente novamente!\n Caso não consiga, entre em contato com o suporte");
             }
         }
-        catch (SQLiteException)
+        catch (SQLiteException e)
         {
-            throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
+            throw new SQLiteException(mensagemDeErroSQLite);
         }
     }
     

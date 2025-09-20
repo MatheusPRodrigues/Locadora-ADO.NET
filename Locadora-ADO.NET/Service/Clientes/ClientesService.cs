@@ -68,28 +68,20 @@ public class ClientesService
     
     private static void ExibirInformacoes(Cliente cliente)
     {
-        if (cliente.Ativo)
-        {
-            Console.WriteLine($"\nId: {cliente.Id}");
-            Console.WriteLine($"Nome: {cliente.Nome}");
-            Console.WriteLine($"CPF: {cliente.Cpf}");
-            Console.WriteLine($"Telefone: {cliente.Telefone}");
-            Console.WriteLine($"Endereço {cliente.Endereco}");
-            Console.WriteLine($"Ativo: {cliente.Ativo}");
-        }
-        else
-        {
-            Console.WriteLine("Este cliente está inativo!");
-        }
+        Console.WriteLine($"\nId: {cliente.Id}");
+        Console.WriteLine($"Nome: {cliente.Nome}");
+        Console.WriteLine($"CPF: {cliente.Cpf}");
+        Console.WriteLine($"Telefone: {cliente.Telefone}");
+        Console.WriteLine($"Endereço {cliente.Endereco}");
+        Console.WriteLine($"Ativo: {cliente.Ativo}");
     }
 
     private static void PercorrerListaDeClientes(List<Cliente> clientes)
     {
         Console.WriteLine("======== CLIENTES ENCONTRADOS ========");
-        foreach (Cliente cliente in clientes)
+        foreach (Cliente cliente in clientes) 
         {
-            if (cliente.Ativo)
-                ExibirInformacoes(cliente);
+            ExibirInformacoes(cliente);
         }
     }
 
@@ -200,16 +192,80 @@ public class ClientesService
         }
     }
 
-    public static void DesativarClientePeloId()
+    public static void AlterarDadosDoCliente()
     {
         try
         {
             ExibirTodosClientes();
-            int id = VerificaSeEhNumeroInteiro("Insira o id do cliente que deseja desativar: ",
-                "Entrada inválida! Tente novamente!");
-            ValidarSeClientePodeSerDesativado(id);
-            LocadoraDAL.DesativarClientePeloId(id);
-            PressioneEnterParaContinuar();
+            int id = VerificaSeEhNumeroInteiro("Digite o id do cliente que deseja alterar dados: ",
+                "Entrada inválida! Tente novamente");
+            Cliente cliente = LocadoraDAL.ExibirClientePeloId(id);
+
+            bool continuar = true;
+            do
+            {
+                string entradaInvalida = "Entrada inválida! Tente novamente!";
+                
+                Console.Clear();
+                ExibirInformacoes(cliente);
+                Console.WriteLine("\nInsira a operação que deseja realizar: ");
+                Console.WriteLine("1 - Alterar nome");
+                Console.WriteLine("2 - Alterar telefone");
+                Console.WriteLine("3 - Alterar endereco");
+                Console.WriteLine("4 - Alterar status no sistema (ativo/inativo)");
+                Console.WriteLine("5 - Salvar alterações e sair");
+                Console.WriteLine("0 - Sair sem salvar");
+                Console.Write("=> ");
+                string opcao = Console.ReadLine();
+
+                switch (opcao)
+                {
+                    case "1":
+                        cliente.Nome = VerificarStringValida($"Insira um novo nome para o cliente {cliente.Nome}: ",
+                            entradaInvalida);
+                        break;
+                    case "2":
+                        cliente.Telefone = InserirUmTelefoneValido(
+                            $"Insira um novo telefone para o cliente {cliente.Telefone}: ",
+                            entradaInvalida);
+                        break;
+                    case "3":
+                        cliente.Endereco = VerificarStringValida(
+                            $"Insira um novo endereço para o cliente {cliente.Nome}: ",
+                            entradaInvalida);
+                        break;
+                    case "4":
+                        cliente.Ativo = !cliente.Ativo;
+                        break;
+                    case "5":
+                        LocadoraDAL.AlterarDadosDoCliente(cliente);
+                        ExibirTodosClientes();
+                        continuar = false;
+                        break;
+                    case "0":
+                        while (true)
+                        {
+                            Console.Write("Deseja realmente sair das alterações sem aplicá-la? (s - sim | n - não): ");
+                            string encerrarPrograma = Console.ReadLine().ToLower();
+
+                            if (encerrarPrograma == "s")
+                            {
+                                Console.WriteLine("Processo encerrado!");
+                                PressioneEnterParaContinuar();
+                                continuar = false;
+                                break;
+                            }
+                            if (encerrarPrograma == "n") 
+                                break;
+                            
+                            Console.WriteLine(entradaInvalida);                             
+                        }
+                        break;
+                    default:
+                        Console.WriteLine("Opção inválida! Tente novamente!");
+                        break;
+                }
+            } while (continuar);
         }
         catch (Exception e)
         {
@@ -217,5 +273,7 @@ public class ClientesService
             PressioneEnterParaContinuar();
         }
     }
+    
+    
     
 }

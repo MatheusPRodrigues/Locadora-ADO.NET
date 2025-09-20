@@ -12,6 +12,9 @@ public class ClientesMenuExibicao
             Console.WriteLine("1 - Exibir todos os clientes");
             Console.WriteLine("2 - Exibir um cliente pelo cpf");
             Console.WriteLine("3 - Exibir um cliente pelo nome");
+            // TODO
+            //Console.WriteLine("4 - Exibir somente clientes ativos");
+            //Console.WriteLine("5 - Exibir somente clientes desativos");
             Console.WriteLine("0 - Retornar ao menu anterior");
             Console.Write(": ");
             string? opcaoDoUsuario = Console.ReadLine();

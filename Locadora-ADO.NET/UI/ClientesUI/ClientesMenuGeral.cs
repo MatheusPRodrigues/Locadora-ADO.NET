@@ -3,7 +3,6 @@ using Locadora_ADO.NET.Service.Clientes;
 namespace Locadora_ADO.NET.UI.ClientesUI;
 
 using static ClientesMenuExibicao;
-using static ClientesMenuGerencStatus;
 
 public class ClientesMenuGeral
 {
@@ -14,7 +13,7 @@ public class ClientesMenuGeral
             Console.WriteLine("========== MENU GERAL DA ABA - CLIENTES ==========");
             Console.WriteLine("1 - Cadastrar novo cliente");
             Console.WriteLine("2 - Exibir clientes");
-            Console.WriteLine("3 - Atualizar dados de cliente");
+            Console.WriteLine("3 - Alterar dados de cliente");
             Console.WriteLine("4 - Gerenciar status do cliente no sistema");
             Console.WriteLine("0 - Retornar ao menu anterior");
             Console.Write(": ");
@@ -30,10 +29,10 @@ public class ClientesMenuGeral
                     Console.Clear();
                     break;
                 case "3":
-                    Console.Clear();
+                    ClientesService.AlterarDadosDoCliente();
                     break;
                 case "4":
-                    MenuDeGerencDeStatusDoCliente();
+                    
                     Console.Clear();
                     break;
                 case "0":
