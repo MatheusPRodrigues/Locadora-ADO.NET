@@ -152,6 +152,41 @@ public class ClientesService
         }
     }
 
+    public static void ExibirTodosClientesFiltrandoStatus()
+    {
+        try
+        {
+            string escolha;
+            bool ativo = true, repeticao;
+            do
+            {
+                Console.Write("Exibindo clientes de forma filtrada => (a - ativos | i - inativos): ");
+                escolha = Console.ReadLine().ToLower();
+
+                if (escolha == "a")
+                    repeticao = false;
+                else if (escolha == "i")
+                {
+                    ativo = false;
+                    repeticao = false;
+                }
+                else
+                {
+                    repeticao = true;
+                }
+            } while (repeticao);
+            PercorrerListaDeClientes(LocadoraDAL.ExibirTodosClientes(ativo));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        finally
+        {
+            PressioneEnterParaContinuar();
+        }
+    }
+    
     public static void ExibirClientePorNome()
     {
         try

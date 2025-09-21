@@ -271,6 +271,44 @@ public class LocadoraDAL
             throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
         }
     }
+
+    public static List<Cliente> ExibirTodosClientes(bool ativo)
+    {
+        List<Cliente> clientes = new List<Cliente>();
+        try
+        {
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = "SELECT * FROM Clientes WHERE ativo = @ativo";
+                comando.Parameters.AddWithValue("@ativo", ativo);
+                using var leitor = comando.ExecuteReader();
+                if (leitor.HasRows)
+                {
+                    while (leitor.Read())
+                    {
+                        clientes.Add(
+                            new Cliente(
+                                Convert.ToInt32(leitor["id"]),
+                                leitor["nome"].ToString(),
+                                leitor["cpf"].ToString(),
+                                leitor["telefone"].ToString(),
+                                leitor["endereco"].ToString(),
+                                Convert.ToBoolean(leitor["ativo"])
+                            )
+                        );
+                    }
+                    return clientes;
+                }
+
+                string mensagem = ativo ? "ativo" : "desativo";
+                throw new RegistroNaoEcontradoException($"Não foi encontrado nenhum cliente {mensagem} na base de dados!");
+            }
+        }
+        catch (SQLiteException)
+        {
+            throw new SQLiteException("Erro manipular banco de dados! Entre em contato com o suporte!");
+        }
+    }
     
     public static List<Cliente> ExibirClientePorNome(string nome)
     {
