@@ -20,9 +20,9 @@ public class FilmesMenuExibicao
             {
                 case "1":
                     ExibirTodosFilmes();
-                    Console.Clear();
                     break;
                 case "2":
+                    ExibirFilmesPorTitulo();
                     break;
                 case "3":
                     break;

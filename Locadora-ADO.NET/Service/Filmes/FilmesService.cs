@@ -39,4 +39,20 @@ public class FilmesService
             PressioneEnterParaContinuar();
         }
     }
+
+    public static void ExibirFilmesPorTitulo()
+    {
+        try
+        {
+            string titulo = VerificarStringValida("Digite o título do filme que deseja consultar (Ex: Vingadores): ",
+                "Entrada inválida! Tente novamente!");
+            PercorrerListaDeFilmes(LocadoraDAL.ExibirFilmesPorTitulo(titulo));
+            PressioneEnterParaContinuar();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            PressioneEnterParaContinuar();
+        }
+    }
 }

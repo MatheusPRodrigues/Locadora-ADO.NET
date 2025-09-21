@@ -507,8 +507,7 @@ public class LocadoraDAL
                                 Convert.ToInt32(leitor["generosId"]),
                                 leitor["nome"].ToString(),
                                 leitor["descricao"].ToString()
-                                )
-                            )
+                                ))
                         );
                     }
                     return filmes;
@@ -521,8 +520,55 @@ public class LocadoraDAL
             throw new SQLiteException(mensagemDeErroSQLite);
         }
     }
-    
-    
+
+    public static List<Filme> ExibirFilmesPorTitulo(string titulo)
+    {
+        try
+        {
+            List<Filme> filmes = new List<Filme>();
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = """
+                                      SELECT
+                                          f.id "filmesId",
+                                          titulo,
+                                          sinopse,
+                                          ano,
+                                          g.id "generosId",
+                                          nome,
+                                          descricao
+                                      FROM Filmes f INNER JOIN Generos g ON f.idGenero = g.id 
+                                      WHERE titulo LIKE @titulo
+                                      """;
+                comando.Parameters.AddWithValue("@titulo", $"{titulo}%");
+                var leitor = comando.ExecuteReader();
+                if (leitor.HasRows)
+                {
+                    while (leitor.Read())
+                    {
+                        // Adicionando objetos de filme na lista
+                        filmes.Add(new Filme(
+                                Convert.ToInt32(leitor["filmesId"]),
+                                leitor["titulo"].ToString(),
+                                leitor["sinopse"].ToString(),
+                                Convert.ToInt32(leitor["ano"]),
+                                new Genero(
+                                    Convert.ToInt32(leitor["generosId"]),
+                                    leitor["nome"].ToString(),
+                                    leitor["descricao"].ToString()
+                                ))
+                        );
+                    }
+                    return filmes;
+                }
+                throw new RegistroNaoEcontradoException($"Não há filmes com este título: '{titulo}' na base de dados!");
+            }
+        }
+        catch (SQLiteException)
+        {
+            throw new SQLiteException(mensagemDeErroSQLite);
+        }
+    } 
     
     #endregion
     
