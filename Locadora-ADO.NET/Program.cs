@@ -1,4 +1,5 @@
 ﻿using Locadora_ADO.NET.UI.ClientesUI;
+using Locadora_ADO.NET.UI.FilmesUI;
 using Locadora_ADO.NET.UI.GenerosUI;
 
 namespace Locadora_ADO.NET;
@@ -13,6 +14,7 @@ class Program
             Console.WriteLine("============ S E J A  B E M - V I N D O (A) ! ============");
             Console.WriteLine("1 - Menu de gêneros de filme");
             Console.WriteLine("2 - Menu de administração dos clientes");
+            Console.WriteLine("3 - Menu de filmes");
             Console.WriteLine("0 - Encerrar sistema");
             Console.Write(": ");
             string? opcaoDoUsuario = Console.ReadLine();
@@ -26,6 +28,10 @@ class Program
                 case "2":
                     Console.Clear();
                     ClientesMenuGeral.MenuDeInteracaoDeClientes();
+                    break;
+                case "3":
+                    Console.Clear();
+                    FilmesMenuGeral.MenuDeFilmes();
                     break;
                 case "0":
                     Environment.Exit(0);

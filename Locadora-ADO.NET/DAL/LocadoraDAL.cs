@@ -470,5 +470,60 @@ public class LocadoraDAL
     
     #endregion
     
+    // ---------------------------------------------------------------------------------------------------------------\\
+
+    #region "Operações relacionadas a tabela de filmes"
+
+    public static List<Filme> ExibirTodosOsFilmes()
+    {
+        try
+        {
+            List<Filme> filmes = new List<Filme>();
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = """
+                                      SELECT
+                                          f.id "filmesId",
+                                          titulo,
+                                          sinopse,
+                                          ano,
+                                          g.id "generosId",
+                                          nome,
+                                          descricao
+                                      FROM Filmes f INNER JOIN Generos g ON f.idGenero = g.id 
+                                      """;
+                var leitor = comando.ExecuteReader();
+                if (leitor.HasRows)
+                {
+                    while (leitor.Read())
+                    {
+                        // Adicionando objetos de filme na lista
+                        filmes.Add(new Filme(
+                            Convert.ToInt32(leitor["filmesId"]),
+                            leitor["titulo"].ToString(),
+                            leitor["sinopse"].ToString(),
+                            Convert.ToInt32(leitor["ano"]),
+                            new Genero(
+                                Convert.ToInt32(leitor["generosId"]),
+                                leitor["nome"].ToString(),
+                                leitor["descricao"].ToString()
+                                )
+                            )
+                        );
+                    }
+                    return filmes;
+                }
+                throw new RegistroNaoEcontradoException("Não há filmes cadastrados na base de dados!");
+            }
+        }
+        catch (SQLiteException)
+        {
+            throw new SQLiteException(mensagemDeErroSQLite);
+        }
+    }
+    
+    
+    
+    #endregion
     
 }
