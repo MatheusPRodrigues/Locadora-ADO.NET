@@ -3,6 +3,7 @@ using Locadora_ADO.NET.Service.Clientes;
 namespace Locadora_ADO.NET.UI.ClientesUI;
 
 using static ClientesMenuExibicao;
+using static ClientesMenuDeletar;
 
 public class ClientesMenuGeral
 {
@@ -14,7 +15,7 @@ public class ClientesMenuGeral
             Console.WriteLine("1 - Cadastrar novo cliente");
             Console.WriteLine("2 - Exibir clientes");
             Console.WriteLine("3 - Alterar dados de cliente");
-            Console.WriteLine("4 - Gerenciar status do cliente no sistema");
+            Console.WriteLine("4 - Deletar cliente do sistema");
             Console.WriteLine("0 - Retornar ao menu anterior");
             Console.Write(": ");
             string? opcaoDoUsuario = Console.ReadLine();
@@ -32,7 +33,7 @@ public class ClientesMenuGeral
                     ClientesService.AlterarDadosDoCliente();
                     break;
                 case "4":
-                    
+                    MenuDeExclusãoDeClientes();
                     Console.Clear();
                     break;
                 case "0":

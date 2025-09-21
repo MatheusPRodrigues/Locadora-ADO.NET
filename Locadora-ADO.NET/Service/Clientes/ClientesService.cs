@@ -85,20 +85,20 @@ public class ClientesService
         }
     }
 
-    private static void ValidarSeClientePodeSerDesativado(int id)
+    private static bool ConfirmarExclusão()
     {
-        try
+        do
         {
-            Cliente cliente = LocadoraDAL.ExibirClientePeloId(id);
-            if (!cliente.Ativo)
-            {
-                throw new ArgumentException("Este cliente já está desativo!");
-            }
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
+            Console.WriteLine("Deseja realmente continuar com a operação de exclusão? (s - sim | n - não)");
+            Console.Write("=> ");
+            string confirmarOperacao = Console.ReadLine().ToLower();
+            if (confirmarOperacao == "s")
+                return true;
+            if (confirmarOperacao == "n")
+                return false;
+            
+            Console.WriteLine("Entrada inválida! Tente novamente!");
+        } while (true);
     }
     
     public static void CadastrarCliente()
@@ -308,7 +308,69 @@ public class ClientesService
             PressioneEnterParaContinuar();
         }
     }
+
+    public static void ExcluirClientePeloId()
+    {
+        try
+        {
+            List<Cliente> clientesInativos = LocadoraDAL.ExibirTodosClientes(false);
+            PercorrerListaDeClientes(clientesInativos);
+            Console.WriteLine();
+            int id = VerificaSeEhNumeroInteiro("Digite o id do cliente que deseja excluir: ", 
+                "Entrada inválida! Tente novamente!");
+            foreach (var c in clientesInativos)
+            {
+                if (c.Id == id)
+                {
+                    if (ConfirmarExclusão())
+                    {
+                        LocadoraDAL.ExcluirClientePeloId(c.Id);
+                        Console.WriteLine("Cliente excluído com sucesso!");
+                        PressioneEnterParaContinuar();
+                        return;
+                    }
+                    throw new OperationCanceledException("Operação de exclusão cancelada com sucesso!");
+                }
+            }
+            throw new ArgumentException("Não achamos nenhum cliente desativado com este id");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            PressioneEnterParaContinuar();
+        }
+    }
     
-    
+    public static void ExcluirClientePeloCpf()
+    {
+        try
+        {
+            List<Cliente> clientesInativos = LocadoraDAL.ExibirTodosClientes(false);
+            PercorrerListaDeClientes(clientesInativos);
+            Console.WriteLine();
+            string cpf = InserirUmCpfValido("Digite o cpf do cliente que deseja excluir: ", 
+                "Entrada inválida! Tente novamente!");
+            foreach (var c in clientesInativos)
+            {
+                if (c.Cpf == cpf)
+                {
+                    if (ConfirmarExclusão())
+                    {
+                        LocadoraDAL.ExcluirClientePeloCpf(c.Cpf);
+                        Console.WriteLine("Cliente excluído com sucesso!");
+                        PressioneEnterParaContinuar();
+                        return;
+                    }
+                    throw new OperationCanceledException("Operação de exclusão cancelada com sucesso!");
+                }
+            }
+            throw new ArgumentException("Não achamos nenhum cliente desativado com este cpf");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            PressioneEnterParaContinuar();
+        }
+    }
     
 }

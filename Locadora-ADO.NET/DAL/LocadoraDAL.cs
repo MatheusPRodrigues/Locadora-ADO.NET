@@ -433,6 +433,40 @@ public class LocadoraDAL
             throw new SQLiteException(mensagemDeErroSQLite);
         }
     }
+
+    public static void ExcluirClientePeloId(int id)
+    {
+        try
+        {
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = "DELETE FROM Clientes WHERE id = @id";
+                comando.Parameters.AddWithValue("@id", id);
+                comando.ExecuteNonQuery();
+            }
+        }
+        catch (SQLiteException e)
+        {
+            throw new SQLiteException(mensagemDeErroSQLite);
+        }
+    }
+    
+    public static void ExcluirClientePeloCpf(string cpf)
+    {
+        try
+        {
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = "DELETE FROM Clientes WHERE cpf = @cpf";
+                comando.Parameters.AddWithValue("@cpf", cpf);
+                comando.ExecuteNonQuery();
+            }
+        }
+        catch (SQLiteException e)
+        {
+            throw new SQLiteException(mensagemDeErroSQLite);
+        }
+    }
     
     #endregion
     
