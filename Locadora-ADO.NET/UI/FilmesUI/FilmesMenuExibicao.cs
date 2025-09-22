@@ -25,6 +25,7 @@ public class FilmesMenuExibicao
                     ExibirFilmesPorTitulo();
                     break;
                 case "3":
+                    ExibirFilmesPorGenero();
                     break;
                 case "0":
                     Console.Clear();

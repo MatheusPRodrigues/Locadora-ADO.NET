@@ -1,5 +1,6 @@
 using Locadora_ADO.NET.DAL;
 using Locadora_ADO.NET.ML;
+using Locadora_ADO.NET.Service.Generos;
 
 namespace Locadora_ADO.NET.Service.Filmes;
 
@@ -23,6 +24,53 @@ public class FilmesService
         foreach (var f in filmes)
         {
             ExibirInfoFilmes(f);
+        }
+    }
+
+    private static int SelecionarGenero()
+    {
+        int contador = 1;
+        List<Genero> generos = LocadoraDAL.ListarTodosOsGeneros();
+        foreach (var g in generos)
+        {
+            Console.WriteLine($"Id: {g.Id} - Gênero: {g.Nome}");
+            contador++;
+        }
+        Console.WriteLine();
+        int idGenero = VerificaSeEhNumeroInteiro("Selecione um dos gêneros da lista (pelo id): ",
+            "Entrada inválida! Tente novamente!");
+        if (generos.Exists(g => g.Id == idGenero))
+            return idGenero;
+
+        throw new ArgumentException($"Não há registro de gênero com id: {idGenero}! Tente novamente!");
+    }
+    
+    public static void CadastrarFilme()
+    {
+        try
+        {
+            Filme filme = new Filme();
+            
+            filme.Genero = LocadoraDAL.ExibirUmGeneroPorId(SelecionarGenero());
+            string titulo = VerificarStringValida("Insira o título do filme: ",
+                "Entrada inválida! Tente novamente!");
+            
+            LocadoraDAL.ConsultarSeFilmeJáExiste(titulo);
+            filme.Titulo = titulo;
+            
+            filme.Sinopse = VerificarStringValida("Insira a sinopse do filme: ",
+                "Entrada inválida! Tente novamente!");
+            filme.Ano = VerificaSeEhNumeroInteiro("Digite o ano de publicação do filme: ",
+                "Entrada inválida! Tente novamente!");
+            
+            LocadoraDAL.CadastrarFilme(filme);
+            Console.WriteLine("Filme cadastrado com sucesso no banco de dados!");
+            ExibirTodosFilmes();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            PressioneEnterParaContinuar();
         }
     }
     
@@ -55,4 +103,107 @@ public class FilmesService
             PressioneEnterParaContinuar();
         }
     }
+
+    public static void ExibirFilmesPorGenero()
+    {
+        try
+        {
+            PercorrerListaDeFilmes(LocadoraDAL.ExibirFilmesPorGenero(SelecionarGenero()));
+            PressioneEnterParaContinuar();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            PressioneEnterParaContinuar();
+        }
+    }
+
+    public static void AlterarDadosDoFilme()
+    {
+        try
+        {
+            ExibirTodosFilmes();
+            int id = VerificaSeEhNumeroInteiro("Digite o id do filme que deseja modificar dados: ",
+                "Entrada inválida! Tente novamente!");
+            Filme filme = LocadoraDAL.ExibirFilmePorId(id);
+            
+            bool continuar = true;
+            do
+            {
+                string entradaInvalida = "Entrada inválida! Tente novamente!";
+                
+                Console.Clear();
+                ExibirInfoFilmes(filme);
+                Console.WriteLine("\nInsira a operação que deseja realizar: ");
+                Console.WriteLine("1 - Alterar titulo");
+                Console.WriteLine("2 - Alterar sinopse");
+                Console.WriteLine("3 - Alterar ano de publicação");
+                Console.WriteLine("4 - Alterar gênero");
+                Console.WriteLine("5 - Salvar alterações e sair");
+                Console.WriteLine("0 - Sair sem salvar");
+                Console.Write("=> ");
+                string opcao = Console.ReadLine();
+
+                switch (opcao)
+                {
+                    case "1":
+                        filme.Titulo = VerificarStringValida("Insira um novo título para o filme: ",
+                            entradaInvalida);
+                        break;
+                    case "2":
+                        filme.Sinopse = VerificarStringValida("Insira uma nova sinopse para o filme: ",
+                            entradaInvalida);
+                        break;
+                    case "3":
+                        filme.Ano = VerificaSeEhNumeroInteiro("Insira um novo ano de publicação para o filme: ",
+                            entradaInvalida);
+                        break;
+                    case "4":
+                        try
+                        {
+                            filme.Genero = LocadoraDAL.ExibirUmGeneroPorId(SelecionarGenero());
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                            PressioneEnterParaContinuar();
+                        }
+                        break;
+                    case "5":
+                        LocadoraDAL.AlterarDadosDoFilme(filme);
+                        ExibirTodosFilmes();
+                        continuar = false;
+                        break;
+                    case "0":
+                        while (true)
+                        {
+                            Console.Write("Deseja realmente sair das alterações sem aplicá-la? (s - sim | n - não): ");
+                            string encerrarPrograma = Console.ReadLine().ToLower();
+
+                            if (encerrarPrograma == "s")
+                            {
+                                Console.WriteLine("Processo encerrado!");
+                                PressioneEnterParaContinuar();
+                                continuar = false;
+                                break;
+                            }
+                            if (encerrarPrograma == "n") 
+                                break;
+                            
+                            Console.WriteLine(entradaInvalida);                             
+                        }
+                        break;
+                    default:
+                        Console.WriteLine("Opção inválida! Tente novamente!");
+                        break;
+                }
+            } while (continuar);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            PressioneEnterParaContinuar();
+        }
+    }
+    
 }

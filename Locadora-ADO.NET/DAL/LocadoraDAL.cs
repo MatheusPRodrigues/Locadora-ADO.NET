@@ -474,6 +474,92 @@ public class LocadoraDAL
 
     #region "Operações relacionadas a tabela de filmes"
 
+    public static void ConsultarSeFilmeJáExiste(string titulo)
+    {
+        try
+        {
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = "SELECT * FROM Filmes WHERE titulo = @titulo";
+                comando.Parameters.AddWithValue("@titulo", titulo);
+                using var leitor = comando.ExecuteReader();
+                if (leitor.HasRows)
+                    throw new ArgumentException("Já existe esse filme na base de dados!");
+            }
+        }
+        catch (SQLiteException)
+        {
+            throw new SQLiteException(mensagemDeErroSQLite);
+        }
+    }
+    
+    public static void CadastrarFilme(Filme filme)
+    {
+        try
+        {
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText =
+                    "INSERT INTO Filmes (titulo, sinopse, ano, idGenero) VALUES (@titulo, @sinopse, @ano, @idGenero)";
+                comando.Parameters.AddWithValue("@titulo", filme.Titulo);
+                comando.Parameters.AddWithValue("@sinopse", filme.Sinopse);
+                comando.Parameters.AddWithValue("@ano", filme.Ano);
+                comando.Parameters.AddWithValue("@idGenero", filme.Genero.Id);
+                if (comando.ExecuteNonQuery() < 1) 
+                    throw new ErroNovoRegistroExcpetion(
+                        "Erro ao cadastrar novo filme na base de dados! Tente novamente!");
+            }
+        }
+        catch (SQLiteException e)
+        {
+            throw new SQLiteException(mensagemDeErroSQLite);
+        }
+    } 
+    
+    public static Filme ExibirFilmePorId(int id)
+    {
+        try
+        {
+            List<Filme> filmes = new List<Filme>();
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = """
+                                      SELECT
+                                          f.id "filmesId",
+                                          titulo,
+                                          sinopse,
+                                          ano,
+                                          g.id "generosId",
+                                          nome,
+                                          descricao
+                                      FROM Filmes f INNER JOIN Generos g ON f.idGenero = g.id 
+                                      WHERE f.id = @id
+                                      """;
+                comando.Parameters.AddWithValue("@id", id);
+                using var leitor = comando.ExecuteReader();
+                if (leitor.Read())
+                {
+                    return new Filme(
+                        Convert.ToInt32(leitor["filmesId"]),
+                        leitor["titulo"].ToString(),
+                        leitor["sinopse"].ToString(),
+                        Convert.ToInt32(leitor["ano"]),
+                        new Genero(
+                            Convert.ToInt32(leitor["generosId"]),
+                            leitor["nome"].ToString(),
+                            leitor["descricao"].ToString()
+                        ));
+                }
+                throw new RegistroNaoEcontradoException($"Não há nenhum registro de filme com id: {id} na base de dados!");
+            }
+        }
+        catch (SQLiteException)
+        {
+            throw new SQLiteException(mensagemDeErroSQLite);
+        }
+    }
+
+    
     public static List<Filme> ExibirTodosOsFilmes()
     {
         try
@@ -492,7 +578,7 @@ public class LocadoraDAL
                                           descricao
                                       FROM Filmes f INNER JOIN Generos g ON f.idGenero = g.id 
                                       """;
-                var leitor = comando.ExecuteReader();
+                using var leitor = comando.ExecuteReader();
                 if (leitor.HasRows)
                 {
                     while (leitor.Read())
@@ -541,7 +627,7 @@ public class LocadoraDAL
                                       WHERE titulo LIKE @titulo
                                       """;
                 comando.Parameters.AddWithValue("@titulo", $"{titulo}%");
-                var leitor = comando.ExecuteReader();
+                using var leitor = comando.ExecuteReader();
                 if (leitor.HasRows)
                 {
                     while (leitor.Read())
@@ -568,7 +654,89 @@ public class LocadoraDAL
         {
             throw new SQLiteException(mensagemDeErroSQLite);
         }
-    } 
+    }
+
+    public static List<Filme> ExibirFilmesPorGenero(int idGenero)
+    {
+        try
+        {
+            List<Filme> filmes = new List<Filme>();
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = """
+                                      SELECT
+                                          f.id "filmesId",
+                                          titulo,
+                                          sinopse,
+                                          ano,
+                                          g.id "generosId",
+                                          nome,
+                                          descricao
+                                      FROM Filmes f INNER JOIN Generos g ON f.idGenero = g.id 
+                                      WHERE g.id = @idGenero
+                                      """;
+                comando.Parameters.AddWithValue("@idGenero", idGenero);
+                using var leitor = comando.ExecuteReader();
+                if (leitor.HasRows)
+                {
+                    while (leitor.Read())
+                    {
+                        // Adicionando objetos de filme na lista
+                        filmes.Add(new Filme(
+                            Convert.ToInt32(leitor["filmesId"]),
+                            leitor["titulo"].ToString(),
+                            leitor["sinopse"].ToString(),
+                            Convert.ToInt32(leitor["ano"]),
+                            new Genero(
+                                Convert.ToInt32(leitor["generosId"]),
+                                leitor["nome"].ToString(),
+                                leitor["descricao"].ToString()
+                            ))
+                        );
+                    }
+
+                    return filmes;
+                }
+                throw new RegistroNaoEcontradoException($"Não há filmes desse gênero na base de dados!");
+            }
+        }
+        catch (SQLiteException)
+        {
+            throw new SQLiteException(mensagemDeErroSQLite);
+        }
+    }
+
+    public static void AlterarDadosDoFilme(Filme filme)
+    {
+        try
+        {
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = """
+                                      UPDATE Filmes SET
+                                            titulo = @titulo,
+                                            sinopse = @sinopse,
+                                            ano = @ano,
+                                            idGenero = @idGenero
+                                      WHERE id = @id
+                                      """;
+                comando.Parameters.AddWithValue("@titulo", filme.Titulo);
+                comando.Parameters.AddWithValue("@sinopse", filme.Sinopse);
+                comando.Parameters.AddWithValue("@ano", filme.Ano);
+                comando.Parameters.AddWithValue("@idGenero", filme.Genero.Id);
+                comando.Parameters.AddWithValue("@id", filme.Id);
+                if (comando.ExecuteNonQuery() > 0)
+                    Console.WriteLine("Filme atualizado com sucesso!");
+                else
+                    throw new ArgumentException(
+                        "Falha ao alterar dados, tente novamente!\n Caso não consiga, entre em contato com o suporte");
+            }
+        }
+        catch (SQLiteException)
+        {
+            throw new SQLiteException(mensagemDeErroSQLite);
+        }
+    }
     
     #endregion
     

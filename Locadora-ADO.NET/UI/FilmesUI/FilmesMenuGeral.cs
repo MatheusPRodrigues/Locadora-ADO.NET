@@ -1,3 +1,5 @@
+using Locadora_ADO.NET.Service.Filmes;
+
 namespace Locadora_ADO.NET.UI.FilmesUI;
 
 using static FilmesMenuExibicao;
@@ -20,13 +22,13 @@ public class FilmesMenuGeral
             switch (opcaoDoUsuario)
             {
                 case "1":
-                    Console.Clear();
+                    FilmesService.CadastrarFilme();
                     break;
                 case "2":
                     MenuDeExibicaoDeFilmes();
-                    Console.Clear();
                     break;
                 case "3":
+                    FilmesService.AlterarDadosDoFilme();                    
                     break;
                 case "4":
                     Console.Clear();
