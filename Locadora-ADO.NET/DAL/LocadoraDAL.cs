@@ -737,6 +737,46 @@ public class LocadoraDAL
             throw new SQLiteException(mensagemDeErroSQLite);
         }
     }
+
+    public static void ExcluirFilmePorId(int id)
+    {
+        try
+        {
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = "DELETE FROM Filmes WHERE id = @id";
+                comando.Parameters.AddWithValue("@id", id);
+                if (comando.ExecuteNonQuery() > 0)
+                    Console.WriteLine("Filme deletado com sucesso!");
+                else 
+                    throw new RegistroNaoEcontradoException($"Não foi encontrado um filme com id {id}!");
+            }
+        }
+        catch (SQLiteException)
+        {
+            throw new SQLiteException(mensagemDeErroSQLite);
+        }
+    }
+    
+    public static void ExcluirFilmePeloTitulo(string titulo)
+    {
+        try
+        {
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = "DELETE FROM Filmes WHERE titulo = @titulo";
+                comando.Parameters.AddWithValue("@titulo", titulo);
+                if (comando.ExecuteNonQuery() > 0)
+                    Console.WriteLine("Filme deletado com sucesso!");
+                else
+                    throw new RegistroNaoEcontradoException($"Não foi encontrado um filme com título {titulo}!");
+            }
+        }
+        catch (SQLiteException)
+        {
+            throw new SQLiteException(mensagemDeErroSQLite);
+        }
+    }
     
     #endregion
     

@@ -205,5 +205,38 @@ public class FilmesService
             PressioneEnterParaContinuar();
         }
     }
-    
+
+    public static void ExcluirFilmePorId()
+    {
+        try
+        {
+            ExibirTodosFilmes();
+            int id = VerificaSeEhNumeroInteiro("Digite o id do filme que deseja excluir: ",
+                "");
+            LocadoraDAL.ExcluirFilmePorId(id);
+            ExibirTodosFilmes();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            PressioneEnterParaContinuar();
+        }
+    }
+
+    public static void ExcluirFilmePeloTitulo()
+    {
+        try
+        {
+            ExibirTodosFilmes();
+            string titulo = VerificarStringValida("Digite o nome do filme que deseja excluir: ",
+                "Entrada inválida! Tente novamente!");
+            LocadoraDAL.ExcluirFilmePeloTitulo(titulo);
+            ExibirTodosFilmes();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            PressioneEnterParaContinuar();
+        }
+    }
 }

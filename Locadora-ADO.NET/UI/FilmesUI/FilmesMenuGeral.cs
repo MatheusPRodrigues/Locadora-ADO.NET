@@ -3,6 +3,7 @@ using Locadora_ADO.NET.Service.Filmes;
 namespace Locadora_ADO.NET.UI.FilmesUI;
 
 using static FilmesMenuExibicao;
+using static FilmesMenuDeletar;
 
 public class FilmesMenuGeral
 {
@@ -31,7 +32,7 @@ public class FilmesMenuGeral
                     FilmesService.AlterarDadosDoFilme();                    
                     break;
                 case "4":
-                    Console.Clear();
+                    MenuDeDeletarFilmes();
                     break;
                 case "0":
                     Console.Clear();
