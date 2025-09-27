@@ -65,15 +65,13 @@ public class GenerosService
                 {
                     case "1":
                         string novoNome = VerificarStringValida(
-                            "Insira um novo nome para o gênero: ",
-                            "Nome inválido! Ex válido: Terror");
+                            "Insira um novo nome para o gênero: ");
                         VerificarSeNomeDeGeneroJaExiste(novoNome);
                         genero.Nome = novoNome;
                         break;
                     case "2":
                         string novaDescricao = VerificarStringValida(
-                            "Insira uma nova descrição para o gênero: ",
-                            "Digite uma descrição!!");
+                            "Insira uma nova descrição para o gênero: ");
                         genero.Descricao = novaDescricao;
                         break;
                     case "3":
@@ -106,14 +104,10 @@ public class GenerosService
     {
         try
         {
-            string nomeDoGenero = VerificarStringValida("Digite um nome para o novo gênero de filme: ",
-                "Nome para o gênero inválido! Ex válido: Aventura");
+            string nomeDoGenero = VerificarStringValida("Digite um nome para o novo gênero de filme: ");
             VerificarSeNomeDeGeneroJaExiste(nomeDoGenero);
             
-            string descricaoDoGenero = VerificarStringValida(
-                "Digite uma descrição breve sobre o novo gênero de filme: ",
-                "Insira uma descrição para o gênero de filme!!"
-                );
+            string descricaoDoGenero = VerificarStringValida("Digite uma descrição breve sobre o novo gênero de filme: ");
             
             Genero genero = new Genero();
             genero.Nome = nomeDoGenero;
@@ -152,9 +146,7 @@ public class GenerosService
         try
         {
             int numero = VerificaSeEhNumeroInteiro(
-                "Insira o id do gênero que deseja consultar: ",
-                "Digite somente números inteiros positivos!"
-                );
+                "Insira o id do gênero que deseja consultar: ");
             ExibirInformacoes(LocadoraDAL.ExibirUmGeneroPorId(numero));
         }
         catch (Exception e)
@@ -172,8 +164,7 @@ public class GenerosService
     {
         try
         {
-            string nome = VerificarStringValida("Insira o nome do gênero que deseja consultar: ", 
-                "Digite um nome para gênero válido! Ex: Terror");
+            string nome = VerificarStringValida("Insira o nome do gênero que deseja consultar: ");
             ExibirInformacoes(LocadoraDAL.ExibirUmGeneroPorNome(nome));
         }
         catch (Exception e)
@@ -195,9 +186,7 @@ public class GenerosService
             ListarTodosOsGeneros();
             
             int id = VerificaSeEhNumeroInteiro(
-                "Insira o id do gênero que deseja consultar: ",
-                "Digite somente números inteiros positivos!"
-            );
+                "Insira o id do gênero que deseja consultar: ");
 
             AlterandoDadosDeGenero(LocadoraDAL.ExibirUmGeneroPorId(id));
         }
@@ -217,8 +206,7 @@ public class GenerosService
             ListarTodosOsGeneros();
             
             int id = VerificaSeEhNumeroInteiro(
-                "Digite o id do gênero que deseja deletar: ",
-                "Digite um número inteiro positivo para o id!");
+                "Digite o id do gênero que deseja deletar: ");
 
             string opcao = "";
             while (opcao != "1" && opcao != "0")
@@ -261,8 +249,7 @@ public class GenerosService
             ListarTodosOsGeneros();
 
             string nome = VerificarStringValida(
-                "Digite o nome do gênero que deseja excluir:",
-                "Digite um nome válido! Ex: Terror");
+                "Digite o nome do gênero que deseja excluir:");
 
             string opcao = "";
             while (opcao != "1" && opcao != "0")

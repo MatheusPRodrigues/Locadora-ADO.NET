@@ -105,8 +105,7 @@ public class ClientesService
     {
         try
         {
-            string nome = VerificarStringValida("Insira um nome para o cliente: ",
-                "Entrada inválida! Tente novamente!");
+            string nome = VerificarStringValida("Insira um nome para o cliente: ");
             
             string cpf = InserirUmCpfValido("Insira o CPF do cliente. Ex (99999999999): ",
                 "CPF inválido! Tente novamente!");
@@ -116,8 +115,7 @@ public class ClientesService
                 "Entrada inválida! Tente novamente!");
             
             string endereco = VerificarStringValida(
-                "Insira o endereço do cliente, ex (Rua Jacaré, 324 - Belo Horizonte/MG): ",
-            "Entrada inválida! Tente novamente!");
+                "Insira o endereço do cliente, ex (Rua Jacaré, 324 - Belo Horizonte/MG): ");
 
             Cliente clienteParaCadastro = new Cliente();
             clienteParaCadastro.Nome = nome;
@@ -192,8 +190,7 @@ public class ClientesService
         try
         {
             VerificarSeExisteClientesCadastrados();
-            string nome = VerificarStringValida("Digite o nome do cliente. Ex(Marcos): ",
-                "Entrada inválida! Tente novamente!");
+            string nome = VerificarStringValida("Digite o nome do cliente. Ex(Marcos): ");
             PercorrerListaDeClientes(LocadoraDAL.ExibirClientePorNome(nome));
         }
         catch (Exception e)
@@ -232,8 +229,7 @@ public class ClientesService
         try
         {
             ExibirTodosClientes();
-            int id = VerificaSeEhNumeroInteiro("Digite o id do cliente que deseja alterar dados: ",
-                "Entrada inválida! Tente novamente");
+            int id = VerificaSeEhNumeroInteiro("Digite o id do cliente que deseja alterar dados: ");
             Cliente cliente = LocadoraDAL.ExibirClientePeloId(id);
 
             bool continuar = true;
@@ -256,8 +252,7 @@ public class ClientesService
                 switch (opcao)
                 {
                     case "1":
-                        cliente.Nome = VerificarStringValida($"Insira um novo nome para o cliente {cliente.Nome}: ",
-                            entradaInvalida);
+                        cliente.Nome = VerificarStringValida($"Insira um novo nome para o cliente {cliente.Nome}: ");
                         break;
                     case "2":
                         cliente.Telefone = InserirUmTelefoneValido(
@@ -266,8 +261,7 @@ public class ClientesService
                         break;
                     case "3":
                         cliente.Endereco = VerificarStringValida(
-                            $"Insira um novo endereço para o cliente {cliente.Nome}: ",
-                            entradaInvalida);
+                            $"Insira um novo endereço para o cliente {cliente.Nome}: ");
                         break;
                     case "4":
                         cliente.Ativo = !cliente.Ativo;
@@ -316,8 +310,7 @@ public class ClientesService
             List<Cliente> clientesInativos = LocadoraDAL.ExibirTodosClientes(false);
             PercorrerListaDeClientes(clientesInativos);
             Console.WriteLine();
-            int id = VerificaSeEhNumeroInteiro("Digite o id do cliente que deseja excluir: ", 
-                "Entrada inválida! Tente novamente!");
+            int id = VerificaSeEhNumeroInteiro("Digite o id do cliente que deseja excluir: ");
             foreach (var c in clientesInativos)
             {
                 if (c.Id == id)

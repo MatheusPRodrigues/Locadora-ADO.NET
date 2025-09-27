@@ -37,8 +37,7 @@ public class FilmesService
             contador++;
         }
         Console.WriteLine();
-        int idGenero = VerificaSeEhNumeroInteiro("Selecione um dos gêneros da lista (pelo id): ",
-            "Entrada inválida! Tente novamente!");
+        int idGenero = VerificaSeEhNumeroInteiro("Selecione um dos gêneros da lista (pelo id): ");
         if (generos.Exists(g => g.Id == idGenero))
             return idGenero;
 
@@ -52,16 +51,13 @@ public class FilmesService
             Filme filme = new Filme();
             
             filme.Genero = LocadoraDAL.ExibirUmGeneroPorId(SelecionarGenero());
-            string titulo = VerificarStringValida("Insira o título do filme: ",
-                "Entrada inválida! Tente novamente!");
+            string titulo = VerificarStringValida("Insira o título do filme: ");
             
             LocadoraDAL.ConsultarSeFilmeJáExiste(titulo);
             filme.Titulo = titulo;
             
-            filme.Sinopse = VerificarStringValida("Insira a sinopse do filme: ",
-                "Entrada inválida! Tente novamente!");
-            filme.Ano = VerificaSeEhNumeroInteiro("Digite o ano de publicação do filme: ",
-                "Entrada inválida! Tente novamente!");
+            filme.Sinopse = VerificarStringValida("Insira a sinopse do filme: ");
+            filme.Ano = VerificaSeEhNumeroInteiro("Digite o ano de publicação do filme: ");
             
             LocadoraDAL.CadastrarFilme(filme);
             Console.WriteLine("Filme cadastrado com sucesso no banco de dados!");
@@ -92,8 +88,7 @@ public class FilmesService
     {
         try
         {
-            string titulo = VerificarStringValida("Digite o título do filme que deseja consultar (Ex: Vingadores): ",
-                "Entrada inválida! Tente novamente!");
+            string titulo = VerificarStringValida("Digite o título do filme que deseja consultar (Ex: Vingadores): ");
             PercorrerListaDeFilmes(LocadoraDAL.ExibirFilmesPorTitulo(titulo));
             PressioneEnterParaContinuar();
         }
@@ -123,15 +118,12 @@ public class FilmesService
         try
         {
             ExibirTodosFilmes();
-            int id = VerificaSeEhNumeroInteiro("Digite o id do filme que deseja modificar dados: ",
-                "Entrada inválida! Tente novamente!");
+            int id = VerificaSeEhNumeroInteiro("Digite o id do filme que deseja modificar dados: ");
             Filme filme = LocadoraDAL.ExibirFilmePorId(id);
             
             bool continuar = true;
             do
             {
-                string entradaInvalida = "Entrada inválida! Tente novamente!";
-                
                 Console.Clear();
                 ExibirInfoFilmes(filme);
                 Console.WriteLine("\nInsira a operação que deseja realizar: ");
@@ -147,16 +139,13 @@ public class FilmesService
                 switch (opcao)
                 {
                     case "1":
-                        filme.Titulo = VerificarStringValida("Insira um novo título para o filme: ",
-                            entradaInvalida);
+                        filme.Titulo = VerificarStringValida("Insira um novo título para o filme: ");
                         break;
                     case "2":
-                        filme.Sinopse = VerificarStringValida("Insira uma nova sinopse para o filme: ",
-                            entradaInvalida);
+                        filme.Sinopse = VerificarStringValida("Insira uma nova sinopse para o filme: ");
                         break;
                     case "3":
-                        filme.Ano = VerificaSeEhNumeroInteiro("Insira um novo ano de publicação para o filme: ",
-                            entradaInvalida);
+                        filme.Ano = VerificaSeEhNumeroInteiro("Insira um novo ano de publicação para o filme: ");
                         break;
                     case "4":
                         try
@@ -190,7 +179,7 @@ public class FilmesService
                             if (encerrarPrograma == "n") 
                                 break;
                             
-                            Console.WriteLine(entradaInvalida);                             
+                            Console.WriteLine("Entrada inválida! Tente novamente!");                             
                         }
                         break;
                     default:
@@ -211,8 +200,7 @@ public class FilmesService
         try
         {
             ExibirTodosFilmes();
-            int id = VerificaSeEhNumeroInteiro("Digite o id do filme que deseja excluir: ",
-                "");
+            int id = VerificaSeEhNumeroInteiro("Digite o id do filme que deseja excluir: ");
             LocadoraDAL.ExcluirFilmePorId(id);
             ExibirTodosFilmes();
         }
@@ -228,8 +216,7 @@ public class FilmesService
         try
         {
             ExibirTodosFilmes();
-            string titulo = VerificarStringValida("Digite o nome do filme que deseja excluir: ",
-                "Entrada inválida! Tente novamente!");
+            string titulo = VerificarStringValida("Digite o nome do filme que deseja excluir: ");
             LocadoraDAL.ExcluirFilmePeloTitulo(titulo);
             ExibirTodosFilmes();
         }
