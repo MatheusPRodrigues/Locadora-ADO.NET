@@ -2,6 +2,8 @@ using System.Data.SQLite;
 using Locadora_ADO.NET.Exceptions;
 using Locadora_ADO.NET.ML;
 
+using static Locadora_ADO.NET.Util.Utils;
+
 namespace Locadora_ADO.NET.DAL;
 
 public class LocadoraDAL
@@ -779,5 +781,228 @@ public class LocadoraDAL
     }
     
     #endregion
+ 
+    // ---------------------------------------------------------------------------------------------------------------\\
+
+    #region "Operações relacionadas a tabela de locacao"
+
+    public static List<Locacao> ExibirTodasLocacoes()
+    {
+        try
+        {
+            List<Locacao> locacoes = new List<Locacao>();
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = """
+                                      SELECT 
+                                      	l.id 'locacaoId',
+                                      	l.dataLocacao,
+                                      	l.dataDevolucaoPrevista,
+                                      	l.dataDevolucaoReal,
+                                      	l.devolvido,
+                                      	c.id 'clienteId',
+                                      	c.nome,
+                                      	c.cpf,
+                                      	c.telefone,
+                                      	c.endereco,
+                                      	c.ativo
+                                      FROM Locacoes l INNER JOIN Clientes c
+                                      ON l.clienteId  = c.id;
+                                      """;
+                using var leitor = comando.ExecuteReader();
+                if (leitor.HasRows)
+                {
+                    while (leitor.Read())
+                    {
+                        locacoes.Add(new Locacao(
+                            Convert.ToInt32(leitor["locacaoId"]),
+                            ConversãoParaDateTime(leitor["dataLocacao"].ToString()),
+                            ConversãoParaDateTime(leitor["dataDevolucaoPrevista"].ToString()),
+                            ConversãoParaDateTime(leitor["dataDevolucaoReal"].ToString()),
+                            Convert.ToBoolean(leitor["devolvido"]),
+                            new Cliente(
+                                Convert.ToInt32(leitor["clienteId"]),
+                                leitor["nome"].ToString(),
+                                leitor["cpf"].ToString(),
+                                leitor["telefone"].ToString(),
+                                leitor["endereco"].ToString(),
+                                Convert.ToBoolean(leitor["ativo"])
+                                )
+                            ));
+                    }
+                    return locacoes;
+                }
+                throw new RegistroNaoEcontradoException("Não foi localizada nenhuma locação de filmes!");
+            }
+        }
+        catch (SQLiteException e)
+        {
+            throw new SQLiteException(mensagemDeErroSQLite);
+        }
+    }
+
+    public static List<Locacao> ExibirTodasLocacoesDevolvidas()
+    {
+        try
+        {
+            List<Locacao> locacoes = new List<Locacao>();
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = """
+                                      SELECT 
+                                      	l.id 'locacaoId',
+                                      	l.dataLocacao,
+                                      	l.dataDevolucaoPrevista,
+                                      	l.dataDevolucaoReal,
+                                      	l.devolvido,
+                                      	c.id 'clienteId',
+                                      	c.nome,
+                                      	c.cpf,
+                                      	c.telefone,
+                                      	c.endereco,
+                                      	c.ativo
+                                      FROM Locacoes l INNER JOIN Clientes c
+                                      ON l.clienteId  = c.id
+                                      WHERE devolvido IS TRUE;
+                                      """;
+                using var leitor = comando.ExecuteReader();
+                if (leitor.HasRows)
+                {
+                    while (leitor.Read())
+                    {
+                        locacoes.Add(new Locacao(
+                            Convert.ToInt32(leitor["locacaoId"]),
+                            ConversãoParaDateTime(leitor["dataLocacao"].ToString()),
+                            ConversãoParaDateTime(leitor["dataDevolucaoPrevista"].ToString()),
+                            ConversãoParaDateTime(leitor["dataDevolucaoReal"].ToString()),
+                            Convert.ToBoolean(leitor["devolvido"]),
+                            new Cliente(
+                                Convert.ToInt32(leitor["clienteId"]),
+                                leitor["nome"].ToString(),
+                                leitor["cpf"].ToString(),
+                                leitor["telefone"].ToString(),
+                                leitor["endereco"].ToString(),
+                                Convert.ToBoolean(leitor["ativo"])
+                                )
+                            ));
+                    }
+                    return locacoes;
+                }
+                throw new RegistroNaoEcontradoException("Não foi localizada nenhuma locação de filmes devolvida pelos clientes!");
+            }
+        }
+        catch (SQLiteException e)
+        {
+            throw new SQLiteException(mensagemDeErroSQLite);
+        }
+    }
     
+    public static List<Locacao> ExibirTodasLocacoesNaoDevolvidas()
+    {
+        try
+        {
+            List<Locacao> locacoes = new List<Locacao>();
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = """
+                                      SELECT 
+                                      	l.id 'locacaoId',
+                                      	l.dataLocacao,
+                                      	l.dataDevolucaoPrevista,
+                                      	l.dataDevolucaoReal,
+                                      	l.devolvido,
+                                      	c.id 'clienteId',
+                                      	c.nome,
+                                      	c.cpf,
+                                      	c.telefone,
+                                      	c.endereco,
+                                      	c.ativo
+                                      FROM Locacoes l INNER JOIN Clientes c
+                                      ON l.clienteId  = c.id
+                                      WHERE devolvido IS FALSE;
+                                      """;
+                using var leitor = comando.ExecuteReader();
+                if (leitor.HasRows)
+                {
+                    while (leitor.Read())
+                    {
+                        locacoes.Add(new Locacao(
+                            Convert.ToInt32(leitor["locacaoId"]),
+                            ConversãoParaDateTime(leitor["dataLocacao"].ToString()),
+                            ConversãoParaDateTime(leitor["dataDevolucaoPrevista"].ToString()),
+                            ConversãoParaDateTime(leitor["dataDevolucaoReal"].ToString()),
+                            Convert.ToBoolean(leitor["devolvido"]),
+                            new Cliente(
+                                Convert.ToInt32(leitor["clienteId"]),
+                                leitor["nome"].ToString(),
+                                leitor["cpf"].ToString(),
+                                leitor["telefone"].ToString(),
+                                leitor["endereco"].ToString(),
+                                Convert.ToBoolean(leitor["ativo"])
+                                )
+                            ));
+                    }
+                    return locacoes;
+                }
+                throw new RegistroNaoEcontradoException("Não foi localizada nenhuma locação de filmes não devolvida pelos clientes!");
+            }
+        }
+        catch (SQLiteException)
+        {
+            throw new SQLiteException(mensagemDeErroSQLite);
+        }
+    }
+    
+    public static Locacao ExibirLocacaoPorId(int id)
+    {
+        try
+        {
+            using (var comando = DbConnection().CreateCommand())
+            {
+                comando.CommandText = """
+                                      SELECT 
+                                      	l.id 'locacaoId',
+                                      	l.dataLocacao,
+                                      	l.dataDevolucaoPrevista,
+                                      	l.dataDevolucaoReal,
+                                      	l.devolvido,
+                                      	c.id 'clienteId',
+                                      	c.nome,
+                                      	c.cpf,
+                                      	c.telefone,
+                                      	c.endereco,
+                                      	c.ativo
+                                      FROM Locacoes l INNER JOIN Clientes c
+                                      ON l.clienteId  = c.id
+                                      WHERE l.id = @id;
+                                      """;
+                comando.Parameters.AddWithValue("@id", id);
+                using var leitor = comando.ExecuteReader();
+                if (leitor.Read())
+                {
+                    return new Locacao(
+                        Convert.ToInt32(leitor["locacaoId"]),
+                        ConversãoParaDateTime(leitor["dataLocacao"].ToString()),
+                        ConversãoParaDateTime(leitor["dataDevolucaoPrevista"].ToString()),
+                        ConversãoParaDateTime(leitor["dataDevolucaoReal"].ToString()),
+                        Convert.ToBoolean(leitor["devolvido"]),
+                        new Cliente(
+                            Convert.ToInt32(leitor["clienteId"]),
+                            leitor["nome"].ToString(),
+                            leitor["cpf"].ToString(),
+                            leitor["telefone"].ToString(),
+                            leitor["endereco"].ToString(),
+                            Convert.ToBoolean(leitor["ativo"])
+                            ));
+                }
+                throw new RegistroNaoEcontradoException($"Não foi localizada nenhuma locação de filmes com este Id: {id}!");
+            }
+        }
+        catch (SQLiteException)
+        {
+            throw new SQLiteException(mensagemDeErroSQLite);
+        }
+    }
+    
+    #endregion
 }

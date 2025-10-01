@@ -39,4 +39,17 @@ public class Utils
         Console.Clear();
     }
 
+    public static DateTime? ConversãoParaDateTime(string data)
+    {
+        bool conversao = DateTime.TryParseExact(data,
+            "dd-MM-yyyy HH:mm:ss",
+            System.Globalization.CultureInfo.InvariantCulture,
+            System.Globalization.DateTimeStyles.None,
+            out DateTime dataConvertida);
+
+        if (conversao)
+            return dataConvertida;
+        
+        return null;
+    }
 }

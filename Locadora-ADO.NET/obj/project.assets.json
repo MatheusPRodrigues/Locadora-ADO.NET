@@ -81,19 +81,19 @@
     ]
   },
   "packageFolders": {
-    "/home/matheus/.nuget/packages/": {}
+    "/home/matheusr/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/Locadora-ADO.NET.csproj",
+      "projectUniqueName": "/home/matheusr/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/Locadora-ADO.NET.csproj",
       "projectName": "Locadora-ADO.NET",
-      "projectPath": "/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/Locadora-ADO.NET.csproj",
-      "packagesPath": "/home/matheus/.nuget/packages/",
-      "outputPath": "/home/matheus/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/obj/",
+      "projectPath": "/home/matheusr/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/Locadora-ADO.NET.csproj",
+      "packagesPath": "/home/matheusr/.nuget/packages/",
+      "outputPath": "/home/matheusr/RiderProjects/Locadora-ADO.NET/Locadora-ADO.NET/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/matheus/.nuget/NuGet/NuGet.Config"
+        "/home/matheusr/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -111,6 +111,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -138,7 +143,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.120/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.414/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
